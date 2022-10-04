@@ -1,5 +1,3 @@
-import { useState } from "react";
-
 export interface Box {
   location: string;
   length: number;
@@ -61,28 +59,3 @@ export const BOXES: Box[] = [
   { location: "23", length: 53, width: 7, height: 30, type: "Bike/TV" },
   { location: "32", length: 45, width: 8, height: 32, type: "LG-Pic" },
 ];
-
-export default function BoxSelector() {
-  const [box, setBox] = useState<number>();
-
-  return (
-    <div className="boxes">
-      <select
-        name="box"
-        id="box"
-        value={box}
-        onChange={(e) => {
-          const { value } = e.target;
-          setBox(parseInt(value));
-        }}
-      >
-        {BOXES.map((box, idx) => (
-          <option key={idx} value={idx}>
-            {box.location} - {box.type} - {box.length} x {box.width} x{" "}
-            {box.height}
-          </option>
-        ))}
-      </select>
-    </div>
-  );
-}

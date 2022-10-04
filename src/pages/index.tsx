@@ -2,50 +2,14 @@ import { useState } from "react";
 import type { NextPage } from "next";
 import clsx from "clsx";
 import Head from "next/head";
-import { signIn, useSession } from "next-auth/react";
+import { useSession } from "next-auth/react";
 import { Switch } from "@headlessui/react";
 
-import { BOXES } from "../components/boxes";
-
-const LoginForm = () => {
-  const [username, setUsername] = useState("");
-  const [password, setPassword] = useState("");
-
-  return (
-    <form
-      className="flex flex-col space-y-10"
-      onSubmit={async (e) => {
-        e.preventDefault();
-        await signIn("credentials", {
-          username,
-          password,
-        });
-      }}
-    >
-      <div className="flex space-x-2">
-        <label className="font-semibold" htmlFor="username">
-          Username
-        </label>
-        <input
-          type="text"
-          value={username}
-          onChange={(e) => setUsername(e.target.value)}
-        />
-      </div>
-      <div className="flex space-x-2">
-        <label className="font-semibold" htmlFor="password">
-          Password
-        </label>
-        <input
-          type="password"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-        />
-      </div>
-      <button type="submit">Login</button>
-    </form>
-  );
-};
+// custom components
+import LoginForm from "../components/LoginForm";
+import BoxOptions from "../components/BoxOptions";
+// constants
+import { BOXES } from "../utils/boxes";
 
 const Index: NextPage = () => {
   const { data: session, status } = useSession();
@@ -53,7 +17,6 @@ const Index: NextPage = () => {
   const [debug, setDebug] = useState(false);
 
   const [padding, setPadding] = useState(1);
-
   const [length, setLength] = useState(1);
   const [width, setWidth] = useState(1);
   const [height, setHeight] = useState(1);
@@ -72,16 +35,18 @@ const Index: NextPage = () => {
     height: BOXES.map((box) => box.height).sort((a, b) => b - a)[0] || 44,
   });
 
-  const boxes = BOXES.sort((a, b) => a.length - b.length).filter((box) => {
-    return (
-      length &&
-      box.length >= length + padding &&
-      width &&
-      box.width >= width + padding &&
-      height &&
-      box.height >= height + padding
-    );
-  });
+  const filteredBoxes = BOXES.sort((a, b) => a.length - b.length).filter(
+    (box) => {
+      return (
+        length &&
+        box.length >= length + padding &&
+        width &&
+        box.width >= width + padding &&
+        height &&
+        box.height >= height + padding
+      );
+    }
+  );
 
   if (status === "loading") {
     return (
@@ -124,77 +89,18 @@ const Index: NextPage = () => {
           Box Picker
         </h1>
 
-        <div className="mt-4 grid grid-cols-2 gap-4">
-          <label
-            className="block text-center text-lg text-gray-700 underline"
-            htmlFor="legnth"
-          >
-            Length
-          </label>
-          <input
-            className="block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
-            type="number"
-            min={min.length}
-            max={max.length}
-            step={1}
-            value={length}
-            onChange={(e) => {
-              setLength(parseInt(e.target.value));
-            }}
-          />
-
-          <label
-            className="block text-center text-lg text-gray-700 underline"
-            htmlFor="width"
-          >
-            Width
-          </label>
-          <input
-            className="block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
-            min={min.width}
-            max={max.width}
-            step={1}
-            type="number"
-            value={width}
-            onChange={(e) => {
-              setWidth(parseInt(e.target.value));
-            }}
-          />
-
-          <label
-            className="block text-center text-lg text-gray-700 underline"
-            htmlFor="height"
-          >
-            Height
-          </label>
-          <input
-            className="block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
-            type="number"
-            min={min.height}
-            max={max.height}
-            step={1}
-            value={height}
-            onChange={(e) => {
-              setHeight(parseInt(e.target.value));
-            }}
-          />
-
-          <label
-            className="block text-center text-lg text-gray-700 underline"
-            htmlFor="height"
-          >
-            Padding
-          </label>
-          <select
-            className="block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
-            value={padding}
-            onChange={(e) => setPadding(parseInt(e.target.value))}
-          >
-            <option value={1}>Basic (1&quot; padding)</option>
-            <option value={2}>Standard (2&quot; padding)</option>
-            <option value={4}>Fragile (4&quot; padding)</option>
-          </select>
-        </div>
+        <BoxOptions
+          length={length}
+          setLength={setLength}
+          width={width}
+          setWidth={setWidth}
+          height={height}
+          setHeight={setHeight}
+          padding={padding}
+          setPadding={setPadding}
+          min={min}
+          max={max}
+        />
 
         {/* debug */}
         <div className="absolute top-2 left-2">
@@ -267,7 +173,7 @@ const Index: NextPage = () => {
               </tr>
             </thead>
             <tbody className="divide-y divide-gray-200 bg-white">
-              {boxes.map((box, idx) => {
+              {filteredBoxes.map((box, idx) => {
                 return (
                   <tr key={idx}>
                     <td className="w-full max-w-0 py-4 pl-4 pr-3 text-sm font-medium text-gray-900 sm:w-auto sm:max-w-none sm:pl-6">
