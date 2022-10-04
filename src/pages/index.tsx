@@ -201,7 +201,22 @@ const Index: NextPage = () => {
                       <ul>
                         {box.available &&
                           box.available.map((config) => (
-                            <li key={config}>{config}</li>
+                            <li
+                              key={config}
+                              className={clsx(
+                                config === "basic" &&
+                                  padding === 1 &&
+                                  "text-indigo-500",
+                                config === "standard" &&
+                                  padding === 2 &&
+                                  "text-indigo-500",
+                                config === "fragile" &&
+                                  padding === 4 &&
+                                  "text-indigo-500"
+                              )}
+                            >
+                              {config}
+                            </li>
                           ))}
                       </ul>
                     </td>
@@ -221,25 +236,67 @@ const Index: NextPage = () => {
                           {box.available && box.available.includes("basic") && (
                             <>
                               <div>
-                                <span className="font-semibold">Basic</span>:
+                                <span
+                                  className={clsx(
+                                    "font-semibold",
+                                    padding === 1 && "text-indigo-500"
+                                  )}
+                                >
+                                  Basic
+                                </span>
+                                :
                               </div>{" "}
-                              <div>{box.basic.total?.toFixed(2)}</div>
+                              <div
+                                className={clsx(
+                                  padding === 1 && "text-indigo-500"
+                                )}
+                              >
+                                {box.basic.total?.toFixed(2)}
+                              </div>
                             </>
                           )}
                           {box.available && box.available.includes("standard") && (
                             <>
                               <div>
-                                <span className="font-semibold">Standard</span>:
+                                <span
+                                  className={clsx(
+                                    "font-semibold",
+                                    padding === 2 && "text-indigo-500"
+                                  )}
+                                >
+                                  Standard
+                                </span>
+                                :
                               </div>{" "}
-                              <div>{box.standard.total?.toFixed(2)}</div>
+                              <div
+                                className={clsx(
+                                  padding === 2 && "text-indigo-500"
+                                )}
+                              >
+                                {box.standard.total?.toFixed(2)}
+                              </div>
                             </>
                           )}
                           {box.available && box.available.includes("fragile") && (
                             <>
                               <div>
-                                <span className="font-semibold">Fragile</span>:
+                                <span
+                                  className={clsx(
+                                    "font-semibold",
+                                    padding === 4 && "text-indigo-500"
+                                  )}
+                                >
+                                  Fragile
+                                </span>
+                                :
                               </div>{" "}
-                              <div>{box.fragile.total?.toFixed(2)}</div>
+                              <div
+                                className={clsx(
+                                  padding === 4 && "text-indigo-500"
+                                )}
+                              >
+                                {box.fragile.total?.toFixed(2)}
+                              </div>
                             </>
                           )}
                         </div>
