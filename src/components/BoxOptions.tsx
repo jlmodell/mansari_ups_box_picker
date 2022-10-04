@@ -42,7 +42,7 @@ const BoxOptions = ({
         Length
       </label>
       <input
-        className="block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
+        className="block w-full rounded-md border-gray-300 text-xs shadow-sm focus:border-indigo-500 focus:ring-indigo-500 md:text-sm"
         type="number"
         min={min.length}
         max={max.length}
@@ -60,7 +60,7 @@ const BoxOptions = ({
         Width
       </label>
       <input
-        className="block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
+        className="block w-full rounded-md border-gray-300 text-xs shadow-sm focus:border-indigo-500 focus:ring-indigo-500 md:text-sm"
         min={min.width}
         max={max.width}
         step={1}
@@ -78,7 +78,7 @@ const BoxOptions = ({
         Height
       </label>
       <input
-        className="block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
+        className="block w-full rounded-md border-gray-300 text-xs shadow-sm focus:border-indigo-500 focus:ring-indigo-500 md:text-sm"
         type="number"
         min={min.height}
         max={max.height}
@@ -96,7 +96,7 @@ const BoxOptions = ({
         Padding
       </label>
       <select
-        className="block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
+        className="block w-full rounded-md border-gray-300 text-xs shadow-sm focus:border-indigo-500 focus:ring-indigo-500 md:text-sm"
         value={padding}
         onChange={(e) => setPadding(parseInt(e.target.value))}
       >

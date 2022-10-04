@@ -174,11 +174,11 @@ const Index: NextPage = () => {
                   scope="col"
                   className="px-3 py-3.5 text-left text-sm font-semibold text-gray-900"
                 >
-                  Available Configurations
+                  Pack Configurations
                 </th>
                 <th
                   scope="col"
-                  className="px-3 py-3.5 text-left text-sm font-semibold text-gray-900"
+                  className="hidden px-3 py-3.5 text-left text-sm font-semibold text-gray-900 sm:table-cell"
                 >
                   Prices
                 </th>
@@ -220,7 +220,7 @@ const Index: NextPage = () => {
                           ))}
                       </ul>
                     </td>
-                    <td className="px-3 py-4 text-sm text-gray-500">
+                    <td className="hidden px-3 py-4 text-sm text-gray-500 lg:table-cell">
                       <>
                         <div className="grid grid-cols-2 divide-y divide-solid">
                           <div>
