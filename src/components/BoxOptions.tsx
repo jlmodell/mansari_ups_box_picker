@@ -104,6 +104,12 @@ const BoxOptions = ({
         <option value={2}>Standard (2&quot; padding)</option>
         <option value={4}>Fragile (4&quot; padding)</option>
       </select>
+
+      <div className="col-span-2 my-4 rounded-md bg-indigo-100 p-4 text-lg">
+        <p className="text-center text-gray-700">
+          <strong>Dimensions:</strong> {length} x {width} x {height}
+        </p>
+      </div>
     </div>
   );
 };

@@ -8,6 +8,7 @@ import { Switch } from "@headlessui/react";
 // custom components
 import LoginForm from "../components/LoginForm";
 import BoxOptions from "../components/BoxOptions";
+import Footer from "../components/Footer";
 // constants
 import { BOXES } from "../utils/boxes";
 
@@ -35,8 +36,20 @@ const Index: NextPage = () => {
     height: BOXES.map((box) => box.height).sort((a, b) => b - a)[0] || 44,
   });
 
-  const filteredBoxes = BOXES.sort((a, b) => a.length - b.length).filter(
-    (box) => {
+  const filteredBoxes = BOXES.map((box) => {
+    const tempBox = box;
+    const available = [];
+
+    if (box.basic.materials !== undefined) available.push("basic");
+    if (box.standard.materials !== undefined) available.push("standard");
+    if (box.fragile.materials !== undefined) available.push("fragile");
+
+    tempBox.available = available;
+
+    return tempBox;
+  })
+    .sort((a, b) => a.length - b.length)
+    .filter((box) => {
       return (
         length &&
         box.length >= length + padding &&
@@ -45,8 +58,7 @@ const Index: NextPage = () => {
         height &&
         box.height >= height + padding
       );
-    }
-  );
+    });
 
   if (status === "loading") {
     return (
@@ -156,26 +168,26 @@ const Index: NextPage = () => {
                   scope="col"
                   className="px-3 py-3.5 text-left text-sm font-semibold text-gray-900"
                 >
-                  Length
+                  Dimensions
                 </th>
                 <th
                   scope="col"
                   className="px-3 py-3.5 text-left text-sm font-semibold text-gray-900"
                 >
-                  Width
+                  Available Configurations
                 </th>
                 <th
                   scope="col"
                   className="px-3 py-3.5 text-left text-sm font-semibold text-gray-900"
                 >
-                  Height
+                  Prices
                 </th>
               </tr>
             </thead>
             <tbody className="divide-y divide-gray-200 bg-white">
               {filteredBoxes.map((box, idx) => {
                 return (
-                  <tr key={idx}>
+                  <tr key={idx} className="hover:bg-indigo-100">
                     <td className="w-full max-w-0 py-4 pl-4 pr-3 text-sm font-medium text-gray-900 sm:w-auto sm:max-w-none sm:pl-6">
                       {box.location}
                     </td>
@@ -183,13 +195,55 @@ const Index: NextPage = () => {
                       {box.type}
                     </td>
                     <td className="px-3 py-4 text-sm text-gray-500">
-                      {box.length}
+                      {box.length} x {box.width} x {box.height}
                     </td>
                     <td className="px-3 py-4 text-sm text-gray-500">
-                      {box.width}
+                      <ul>
+                        {box.available &&
+                          box.available.map((config) => (
+                            <li key={config}>{config}</li>
+                          ))}
+                      </ul>
                     </td>
                     <td className="px-3 py-4 text-sm text-gray-500">
-                      {box.height}
+                      <>
+                        <div className="grid grid-cols-2 divide-y divide-solid">
+                          <div>
+                            <span className="font-semibold">Box Price</span>:
+                          </div>
+                          <div>{box.price.toFixed(2)}</div>
+                        </div>
+
+                        <div className="mt-1 grid grid-cols-2 divide-y divide-solid">
+                          <div className="col-span-2 pl-4 font-semibold underline">
+                            <p>Packed Prices</p>
+                          </div>
+                          {box.available && box.available.includes("basic") && (
+                            <>
+                              <div>
+                                <span className="font-semibold">Basic</span>:
+                              </div>{" "}
+                              <div>{box.basic.total?.toFixed(2)}</div>
+                            </>
+                          )}
+                          {box.available && box.available.includes("standard") && (
+                            <>
+                              <div>
+                                <span className="font-semibold">Standard</span>:
+                              </div>{" "}
+                              <div>{box.standard.total?.toFixed(2)}</div>
+                            </>
+                          )}
+                          {box.available && box.available.includes("fragile") && (
+                            <>
+                              <div>
+                                <span className="font-semibold">Fragile</span>:
+                              </div>{" "}
+                              <div>{box.fragile.total?.toFixed(2)}</div>
+                            </>
+                          )}
+                        </div>
+                      </>
                     </td>
                   </tr>
                 );
@@ -198,6 +252,8 @@ const Index: NextPage = () => {
           </table>
         </div>
       </main>
+
+      <Footer />
     </>
   );
 };
