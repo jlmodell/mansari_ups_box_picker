@@ -9,6 +9,8 @@ import { Switch } from "@headlessui/react";
 import LoginForm from "../components/LoginForm";
 import BoxOptions from "../components/BoxOptions";
 import Footer from "../components/Footer";
+import BoxVisual from "../components/BoxVisual";
+
 // constants
 import { BOXES } from "../utils/boxes";
 
@@ -48,17 +50,48 @@ const Index: NextPage = () => {
 
     return tempBox;
   })
-    .sort((a, b) => a.length - b.length)
     .filter((box) => {
+      // const hypotenuse = Math.sqrt(
+      //   Math.pow(box.length, 2) + Math.pow(box.width, 2)
+      // );
+
       return (
-        length &&
-        box.length >= length + padding &&
-        width &&
-        box.width >= width + padding &&
-        height &&
-        box.height >= height + padding
+        // (length &&
+        //   width &&
+        //   height &&
+        //   hypotenuse >= length + padding &&
+        //   box.height >= width + padding) ||
+        // length x width x height
+        (length &&
+          width &&
+          height &&
+          box.length >= length + padding &&
+          box.width >= width + padding &&
+          box.height >= height + padding) ||
+        // height x width x length
+        (length &&
+          width &&
+          height &&
+          box.length >= height + padding &&
+          box.width >= width + padding &&
+          box.height >= length + padding) ||
+        // height x length x width
+        (length &&
+          width &&
+          height &&
+          box.length >= height + padding &&
+          box.width >= length + padding &&
+          box.height >= width + padding) ||
+        // width x length x height
+        (length &&
+          width &&
+          height &&
+          box.length >= width + padding &&
+          box.width >= length + padding &&
+          box.height >= height + padding)
       );
-    });
+    })
+    .sort((a, b) => a.price - b.price);
 
   if (status === "loading") {
     return (
@@ -143,7 +176,19 @@ const Index: NextPage = () => {
           </Switch>
           {debug && (
             <pre>
-              {JSON.stringify({ length, width, height, padding }, null, 2)}
+              {JSON.stringify(
+                {
+                  length,
+                  width,
+                  height,
+                  padding,
+                  c_l: length + padding,
+                  c_w: width + padding,
+                  c_h: height + padding,
+                },
+                null,
+                2
+              )}
             </pre>
           )}
         </div>
@@ -195,7 +240,16 @@ const Index: NextPage = () => {
                       {box.type}
                     </td>
                     <td className="px-3 py-4 text-sm text-gray-500">
-                      {box.length} x {box.width} x {box.height}
+                      <div className="grid place-items-center">
+                        <div className="scale-50">
+                          <BoxVisual width={box.width} height={box.height} />
+                        </div>
+                        <p>
+                          <strong>
+                            {box.length} x {box.width} x {box.height}
+                          </strong>
+                        </p>
+                      </div>
                     </td>
                     <td className="px-3 py-4 text-sm text-gray-500">
                       <ul>

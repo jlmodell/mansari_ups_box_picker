@@ -1,5 +1,7 @@
 import type { Dispatch, SetStateAction } from "react";
 
+import BoxVisual from "../components/BoxVisual";
+
 type IncomingBoxOptionsProps = {
   length: number;
   width: number;
@@ -46,10 +48,10 @@ const BoxOptions = ({
         type="number"
         min={min.length}
         max={max.length}
-        step={1}
+        step={0.5}
         value={length}
         onChange={(e) => {
-          setLength(parseInt(e.target.value));
+          setLength(parseFloat(e.target.value));
         }}
       />
 
@@ -63,11 +65,11 @@ const BoxOptions = ({
         className="block w-full rounded-md border-gray-300 text-xs shadow-sm focus:border-indigo-500 focus:ring-indigo-500 md:text-sm"
         min={min.width}
         max={max.width}
-        step={1}
+        step={0.5}
         type="number"
         value={width}
         onChange={(e) => {
-          setWidth(parseInt(e.target.value));
+          setWidth(parseFloat(e.target.value));
         }}
       />
 
@@ -82,10 +84,10 @@ const BoxOptions = ({
         type="number"
         min={min.height}
         max={max.height}
-        step={1}
+        step={0.5}
         value={height}
         onChange={(e) => {
-          setHeight(parseInt(e.target.value));
+          setHeight(parseFloat(e.target.value));
         }}
       />
 
@@ -109,6 +111,9 @@ const BoxOptions = ({
         <p className="text-center text-gray-700">
           <strong>Dimensions:</strong> {length} x {width} x {height}
         </p>
+        <div className="grid scale-[80%] place-items-center">
+          <BoxVisual width={width} height={height} />
+        </div>
       </div>
     </div>
   );
